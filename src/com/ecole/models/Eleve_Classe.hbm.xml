@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.ecole.models.Eleve_Classe" table="eleve_classe">
+  <composite-id>
+   <key-property column="matricule_eleve" name="matricule_eleve" type="string"/>
+   <key-property column="code_classe" name="code_classe" type="string"/>
+   <key-property column="code_annee" name="code_annee" type="string"/>
+  </composite-id>
+ </class>
+</hibernate-mapping>

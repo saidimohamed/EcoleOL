@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:p="http://primefaces.org/ui">
+     
+    <h:head>
+        <title>Cars</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 90%;
+            }
+        </style>
+    </h:head>
+     
+    <h:body>
+        <h:form>
+            <p:dataTable var="parent" value="#{GestionUtilisateur.utilisateurList}">
+                <p:column headerText="CIN">
+                    <h:outputText value="#{parent.cin}"  filterBy="#{parent.cin}"/>
+                </p:column>
+ 
+                <p:column headerText="Nom" filterBy="#{parent.nom}">
+                    <h:outputText value="#{parent.nom}" />
+                </p:column>
+ 
+                <p:column headerText="Prenom" filterBy="#{parent.prenom}">
+                    <h:outputText value="#{parent.prenom}" />
+                </p:column>
+ 
+                <p:column headerText="Fonction" filterBy="#{parent.fonction}">
+                    <h:outputText value="#{parent.fonction}" />
+                </p:column>
+				
+				<p:column headerText="Mobile" filterBy="#{parent.tel}">
+                    <h:outputText value="#{parent.tel}" />
+                </p:column>
+ 
+                <p:column style="width:32px;text-align: center">
+                    <p:commandButton icon="ui-icon-search" actionListener="#{GestionEleve.selectParent(parent)}" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </h:body>
+     
+</html>

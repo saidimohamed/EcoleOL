@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<faces-config
+    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
+    version="2.2">
+      <managed-bean>
+	  <managed-bean-name>Login</managed-bean-name>
+	  <managed-bean-class>com.ecole.beans.LoginBean</managed-bean-class>
+	  <managed-bean-scope>session</managed-bean-scope>
+     </managed-bean>
+      <managed-bean>
+	  <managed-bean-name>GestionEleve</managed-bean-name>
+	  <managed-bean-class>com.ecole.beans.GestionEleve</managed-bean-class>
+	  <managed-bean-scope>session</managed-bean-scope>
+     </managed-bean>
+      <managed-bean>
+	  <managed-bean-name>GestionClasse</managed-bean-name>
+	  <managed-bean-class>com.ecole.beans.GestionClasse</managed-bean-class>
+	  <managed-bean-scope>session</managed-bean-scope>
+     </managed-bean>
+     <managed-bean>
+	  <managed-bean-name>GestionUtilisateur</managed-bean-name>
+	  <managed-bean-class>com.ecole.beans.GestionUtilisateur</managed-bean-class>
+	  <managed-bean-scope>session</managed-bean-scope>
+     </managed-bean>
+     <managed-bean>
+	  <managed-bean-name>GestionNiveau</managed-bean-name>
+	  <managed-bean-class>com.ecole.beans.GestionNiveau</managed-bean-class>
+	  <managed-bean-scope>session</managed-bean-scope>
+     </managed-bean>
+     <managed-bean>
+	  <managed-bean-name>chartView</managed-bean-name>
+	  <managed-bean-class>com.ecole.beans.ChartView</managed-bean-class>
+	  <managed-bean-scope>session</managed-bean-scope>
+     </managed-bean>
+    <navigation-rule>
+	<from-view-id>login.xhtml</from-view-id>
+	<navigation-case>
+		<from-action>#{Login.checkLogin}</from-action>
+		<from-outcome>adminpage</from-outcome>
+		<to-view-id>/pagesXHTML/index.xhtml</to-view-id>
+	</navigation-case>
+		<navigation-case>
+		<from-action>#{Login.checkLogin}</from-action>
+		<from-outcome>success</from-outcome>
+		<to-view-id>/pages/acceuil.xhtml</to-view-id>
+	</navigation-case>
+	</navigation-rule>	
+	<application>
+   		 <locale-config>
+        	<default-locale>fr</default-locale>
+       		 <supported-locale>fr</supported-locale>
+   		 </locale-config>
+    	<action-listener>org.primefaces.application.DialogActionListener</action-listener>
+   		 <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+    	<view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+
+	</application>
+
+</faces-config>

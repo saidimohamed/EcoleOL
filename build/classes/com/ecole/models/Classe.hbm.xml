@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.ecole.models.Classe" table="classe">
+  <id column="code_classe" name="code_classe" type="string"/>
+  <property column="designation" generated="never" lazy="false"
+   name="designation" type="string"/>
+  <property column="code_niveau" generated="never" lazy="false"
+   name="code_niveau" type="string"/>
+ </class>
+</hibernate-mapping>

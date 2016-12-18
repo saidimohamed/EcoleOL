@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.ecole.models.Compte" table="compte">
+  <id column="id_utilisateur" name="id_utilisateur" type="string"/>
+  <property column="login" generated="never" lazy="false" name="login" type="string"/>
+  <property column="password" generated="never" lazy="false"
+   name="password" type="string"/>
+  <property column="type_compte" generated="never" lazy="false"
+   name="type_compte" type="string"/>
+ </class>
+</hibernate-mapping>

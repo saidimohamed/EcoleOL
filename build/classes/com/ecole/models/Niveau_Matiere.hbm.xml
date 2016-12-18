@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.ecole.models.Niveau_Matiere" table="parent">
+  <composite-id mapped="false" unsaved-value="undefined">
+   <key-property column="code_matiere" name="code_matiere" type="string"/>
+   <key-property column="code_niveau" name="code_niveau" type="string"/>
+  </composite-id>
+ </class>
+</hibernate-mapping>

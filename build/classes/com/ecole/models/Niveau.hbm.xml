@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+                                   "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+ <class name="com.ecole.models.Niveau" table="niveau">
+  <id column="code_niveau" name="code_niveau" type="string"/>
+  <property column="designation" generated="never" lazy="false" name="designation" type="string"/>
+  
+ </class>
+</hibernate-mapping>
