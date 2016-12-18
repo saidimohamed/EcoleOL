@@ -18,6 +18,7 @@ public class Eleve implements java.io.Serializable {
 	private String prenom;
 	private Date date_naissance;
 	private String sexe;
+	private Date deleted;
 
 	public Eleve() {
 	}
@@ -26,12 +27,13 @@ public class Eleve implements java.io.Serializable {
 		this.matricule_eleve = matricule_eleve;
 	}
 
-	public Eleve(String matricule_eleve, String nom, String prenom, Date date_naissance, String sexe) {
+	public Eleve(String matricule_eleve, String nom, String prenom, Date date_naissance, String sexe, Date deleted) {
 		this.matricule_eleve = matricule_eleve;
 		this.nom = nom;
 		this.prenom = prenom;
 		this.date_naissance = date_naissance;
 		this.sexe = sexe;
+		this.deleted = deleted;
 	}
 
 	public String getMatricule_eleve() {
@@ -73,5 +75,14 @@ public class Eleve implements java.io.Serializable {
 	public void setSexe(String sexe) {
 		this.sexe = sexe;
 	}
+
+	public Date getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Date deleted) {
+		this.deleted = deleted;
+	}
+	
 
 }

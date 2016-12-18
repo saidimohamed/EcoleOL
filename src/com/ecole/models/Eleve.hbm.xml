@@ -9,6 +9,7 @@
   <property column="date_naissance" generated="never" lazy="false"
    name="date_naissance" type="date"/>
   <property column="sexe" generated="never" lazy="false" name="sexe" type="string"/>
+  <property column="deleted" generated="never" lazy="false" name="deleted" type="date"/>
 
  
  </class>

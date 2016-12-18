@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -197,7 +195,7 @@ public class GestionEleve  implements Serializable {
 		if(!q.getSession().getTransaction().isActive())
 			 q.getSession().beginTransaction();
 
-    	eleveList = q.getSession().createCriteria(Eleve.class).list();
+    	eleveList = q.getSession().createCriteria(Eleve.class).add(Restrictions.isNull("deleted")).list();
     
     	
     }
@@ -267,12 +265,14 @@ public class GestionEleve  implements Serializable {
     		//pr = session.load(Parent.class,new PKField(((Parent)prl.get(0)).getId_utilisateur(),((Parent)prl.get(0)).getId_utilisateur()));
     		//System.out.println("Parent id"+pr.getId_utilisateur());
     		q.executeQuery("delete Parent  where matricule_eleve='"+selectedEleve.getMatricule_eleve()+"'");
-    		System.out.println("id uti == "+((Parent)prl.get(0)).getId_utilisateur());
+    		//System.out.println("id uti == "+((Parent)prl.get(0)).getId_utilisateur());
         	//q.transactionCommit();
 			//q.delete(pr);
     		}
-    	q.executeQuery("delete Eleve where matricule_eleve='"+selectedEleve.getMatricule_eleve()+"'");
     	
+    	//q.executeQuery("delete Eleve where matricule_eleve='"+selectedEleve.getMatricule_eleve()+"'");
+    	q.executeQuery("update Eleve set deleted=DATE_FORMAT(NOW(),'%Y-%m-%d')  where"
+    			+ " matricule_eleve='"+selectedEleve.getMatricule_eleve()+"'");;
     	generateListEleve();
     	getListParentEleve();
     	
