@@ -7,32 +7,32 @@
       <managed-bean>
 	  <managed-bean-name>Login</managed-bean-name>
 	  <managed-bean-class>com.ecole.beans.LoginBean</managed-bean-class>
-	  <managed-bean-scope>session</managed-bean-scope>
+	  <managed-bean-scope>request</managed-bean-scope>
      </managed-bean>
       <managed-bean>
 	  <managed-bean-name>GestionEleve</managed-bean-name>
 	  <managed-bean-class>com.ecole.beans.GestionEleve</managed-bean-class>
-	  <managed-bean-scope>session</managed-bean-scope>
+	  <managed-bean-scope>view</managed-bean-scope>
      </managed-bean>
       <managed-bean>
 	  <managed-bean-name>GestionClasse</managed-bean-name>
 	  <managed-bean-class>com.ecole.beans.GestionClasse</managed-bean-class>
-	  <managed-bean-scope>session</managed-bean-scope>
+	  <managed-bean-scope>view</managed-bean-scope>
      </managed-bean>
      <managed-bean>
 	  <managed-bean-name>GestionUtilisateur</managed-bean-name>
 	  <managed-bean-class>com.ecole.beans.GestionUtilisateur</managed-bean-class>
-	  <managed-bean-scope>session</managed-bean-scope>
+	  <managed-bean-scope>view</managed-bean-scope>
      </managed-bean>
      <managed-bean>
 	  <managed-bean-name>GestionNiveau</managed-bean-name>
 	  <managed-bean-class>com.ecole.beans.GestionNiveau</managed-bean-class>
-	  <managed-bean-scope>session</managed-bean-scope>
+	  <managed-bean-scope>view</managed-bean-scope>
      </managed-bean>
      <managed-bean>
 	  <managed-bean-name>chartView</managed-bean-name>
 	  <managed-bean-class>com.ecole.beans.ChartView</managed-bean-class>
-	  <managed-bean-scope>session</managed-bean-scope>
+	  <managed-bean-scope>view</managed-bean-scope>
      </managed-bean>
     <navigation-rule>
 	<from-view-id>login.xhtml</from-view-id>
