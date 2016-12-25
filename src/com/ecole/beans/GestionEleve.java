@@ -3,7 +3,10 @@ package com.ecole.beans;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -47,7 +50,7 @@ public class GestionEleve  implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 8094807778228346369L;
-	private Eleve eleve;
+	//private EleveTransit eleve;
 	
      private Eleve selectedEleve;
      private List<Eleve> eleveList;
@@ -55,6 +58,9 @@ public class GestionEleve  implements Serializable {
      private String newCinParent;
      private Session session;
      private Querys q;
+     private List listDesClasse = new ArrayList<Classe>();;
+     private Map<String,String> classeList = new HashMap<String, String>();
+     private Classe selectedClasse;
      private EleveTransit selectedEleveTransit, eleveTransit; 
 	//private Parent p;
      private String parent,nomparent,finalparent;
@@ -69,9 +75,26 @@ public class GestionEleve  implements Serializable {
 	}
 
 	public String getNomparent() {
-		String value=nomparent;
+		String value=nomparent; 
 		nomparent=null;
 		return value;
+	}
+
+
+	public Classe getSelectedClasse() {
+		return selectedClasse;
+	}
+
+	public void setSelectedClasse(Classe selectedClasse) {
+		this.selectedClasse = selectedClasse;
+	}
+
+	public Map<String, String> getClasseList() {
+		return classeList;
+	}
+
+	public void setClasseList(Map<String, String> classeList) {
+		this.classeList = classeList;
 	}
 
 	public EleveTransit getSelectedEleveTransit() {
@@ -107,27 +130,39 @@ public class GestionEleve  implements Serializable {
     public void init() {
     	q = new Querys();
     	q.buildSession();
+    
     	
-    	eleve=new Eleve();
+    	eleveTransit=new EleveTransit();
+    	selectedClasse = new Classe();
+    	q.getSession().beginTransaction();
+    	listDesClasse = q.getSession().createCriteria(Classe.class).list();
     	 
     	parent=null;
     	
-    	generateListEleve();
+    	generateListClasse();
     	generateListEleve2();
     	getListParentEleve();
     }
 
 
-	public Eleve getEleve() {
+	/*public Eleve getEleve() {
 		return eleve;
-	}
+	}*/
 
 
-	public void setEleve(Eleve eleve) {
+	/*public void setEleve(Eleve eleve) {
 		this.eleve = eleve;
 	}
-
+*/
 	
+
+	public EleveTransit getEleveTransit() {
+		return eleveTransit;
+	}
+
+	public void setEleveTransit(EleveTransit eleveTransit) {
+		this.eleveTransit = eleveTransit;
+	}
 
 	public void addEleve(){
 		
@@ -135,7 +170,7 @@ public class GestionEleve  implements Serializable {
 		
 		//if(!session.getTransaction().isActive())
 		// session.beginTransaction();
-		eleve.setMatricule_eleve(n.getUid());
+		eleveTransit.getEleve().setMatricule_eleve(n.getUid());
 		
 		 
 		try{
@@ -145,12 +180,18 @@ public class GestionEleve  implements Serializable {
 				m.error("L'utilisateur choisie n'est pas un parent");
 			else{
 				Parent p = new Parent();
+				Eleve_Classe ec = new Eleve_Classe();
 				p.setId_utilisateur(selectedparent.get(0).getId_utilisateur());
-				p.setMatricule_eleve(eleve.getMatricule_eleve());
+				p.setMatricule_eleve(eleveTransit.getEleve().getMatricule_eleve());
 				/*session.save(eleve);
 				session.save(p);*/
-				q.save(eleve);
+				ec.setCode_annee("1");
+				ec.setCode_classe(selectedClasse.getCode_classe());
+				
+				ec.setMatricule_eleve(eleveTransit.getEleve().getMatricule_eleve());
+				q.save(eleveTransit.getEleve());
 				q.save(p);
+				q.save(ec);
 
 				
 				
@@ -167,6 +208,7 @@ public class GestionEleve  implements Serializable {
 	  
 	  
 	  generateListEleve();
+	  generateListEleve2();
 	  getListParentEleve();
 	    
 		}
@@ -191,7 +233,7 @@ public class GestionEleve  implements Serializable {
     
     public void generateListEleve()
     {	
-		if(!q.getSession().isOpen())
+		//if(!q.getSession().isOpen())
 			q.buildSession();
 		if(!q.getSession().getTransaction().isActive())
 			 q.getSession().beginTransaction();
@@ -200,22 +242,46 @@ public class GestionEleve  implements Serializable {
     
     	
     }
+    public void generateListClasse()
+    {	
+		//if(!q.getSession().isOpen())
+			q.buildSession();
+		if(!q.getSession().getTransaction().isActive())
+			 q.getSession().beginTransaction();
+		
+    	 
+    	 classeList = new HashMap<String, String>();
+    	 for (int i =0; i<listDesClasse.size();i++){
+    		 
+    		 classeList.put(((Classe)listDesClasse.get(i)).getDesignation(),((Classe)listDesClasse.get(i)).getCode_classe() );
+    		 //System.out.println(((Classe)l.get(i)).getDesignation());
+    	 }
+    
+    	
+    }
     
     //////////////////////////////////////////::
     public void generateListEleve2()
     {	
+    	
+    	generateListEleve();
+    	
+    	eleveList2 = new ArrayList<EleveTransit>();
     	Eleve e = new Eleve();
-    	List l = new ArrayList<>();
     	List<Classe> cl = new ArrayList<Classe>();
-    	EleveTransit et = new EleveTransit();
-    	eleveList2 = new ArrayList<>();
+    	List l = new ArrayList<>();
+    	
+    	
 		if(!q.getSession().isOpen())
 			q.buildSession();
 		if(!q.getSession().getTransaction().isActive())
 			 q.getSession().beginTransaction();
 		for(int i=0; i< eleveList.size();i++){
 			
+			EleveTransit et = new EleveTransit();
+
 			e = (Eleve) eleveList.get(i);
+			
 			l = q.find(Eleve_Classe.class, "matricule_eleve", e.getMatricule_eleve());
 			if(l.size() != 0 ){
 				
@@ -225,9 +291,15 @@ public class GestionEleve  implements Serializable {
 				
 				}
 			    et.setEleve(e);
+			    System.out.println("eleve e : "+et.getEleve().getPrenom());
 			    eleveList2.add(et);
+			    
+			    for(int j=0; j<eleveList2.size();j++)
+				    System.out.println("Eleve: "+eleveList2.get(j).getEleve().getPrenom());
+		    	
+			    
 		}
-    	
+		
     
     	
     }
@@ -259,13 +331,13 @@ public class GestionEleve  implements Serializable {
     			//session.beginTransaction();
     	//Parent pr = new Parent();
     	//pr.setMatricule_eleve(selectedEleve.getMatricule_eleve());
-    	List prl = q.find(Parent.class,"matricule_eleve", selectedEleve.getMatricule_eleve());
+    	List prl = q.find(Parent.class,"matricule_eleve", selectedEleveTransit.getEleve().getMatricule_eleve());
     	System.out.println(prl.size()+"  size prl list");
     	if(! prl.isEmpty()){
     		//pr.setId_utilisateur(((Parent)prl.get(0)).getId_utilisateur());
     		//pr = session.load(Parent.class,new PKField(((Parent)prl.get(0)).getId_utilisateur(),((Parent)prl.get(0)).getId_utilisateur()));
     		//System.out.println("Parent id"+pr.getId_utilisateur());
-    		q.executeQuery("delete Parent  where matricule_eleve='"+selectedEleve.getMatricule_eleve()+"'");
+    		q.executeQuery("delete Parent  where matricule_eleve='"+selectedEleveTransit.getEleve().getMatricule_eleve()+"'");
     		//System.out.println("id uti == "+((Parent)prl.get(0)).getId_utilisateur());
         	//q.transactionCommit();
 			//q.delete(pr);
@@ -273,8 +345,8 @@ public class GestionEleve  implements Serializable {
     	
     	//q.executeQuery("delete Eleve where matricule_eleve='"+selectedEleve.getMatricule_eleve()+"'");
     	q.executeQuery("update Eleve set deleted=DATE_FORMAT(NOW(),'%Y-%m-%d')  where"
-    			+ " matricule_eleve='"+selectedEleve.getMatricule_eleve()+"'");;
-    	generateListEleve();
+    			+ " matricule_eleve='"+selectedEleveTransit.getEleve().getMatricule_eleve()+"'");;
+    	generateListEleve2();
     	getListParentEleve();
     	
        	m.success("Suppression terminée avec succès");
@@ -335,11 +407,11 @@ public class GestionEleve  implements Serializable {
 
     public void reset() {
     	
-    	eleve.setMatricule_eleve(null);
-    	eleve.setSexe(null);
-    	eleve.setNom(null);
-    	eleve.setPrenom(null);
-    	eleve.setDate_naissance(null);
+    	eleveTransit.getEleve().setMatricule_eleve(null);
+    	eleveTransit.getEleve().setSexe(null);
+    	eleveTransit.getEleve().setNom(null);
+    	eleveTransit.getEleve().setPrenom(null);
+    	eleveTransit.getEleve().setDate_naissance(null);
     	parent=null;
     	
     }

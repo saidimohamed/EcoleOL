@@ -3,11 +3,18 @@ package com.ecole.models;
 public class EleveTransit {
 	
 	
-	private Eleve eleve;
-	private Utilisateur parent;
-	private Classe classe;
+	private Eleve eleve=new Eleve();
+	private Utilisateur parent=new Utilisateur();
+	private Classe classe=new Classe();
+	private Annee_Scolaire annee=new Annee_Scolaire();
 	
 	
+	public Annee_Scolaire getAnnee() {
+		return annee;
+	}
+	public void setAnnee(Annee_Scolaire annee) {
+		this.annee = annee;
+	}
 	public Classe getClasse() {
 		return classe;
 	}

@@ -493,27 +493,34 @@
 						<h:panelGrid columns="4" columnClasses="label, value">
 						
 							<h:outputText style="color:black;font-size:small" value="Nom: *" />
-							<p:inputText value="#{GestionEleve.eleve.nom}" required="true" title="Nom de l'eleve" requiredMessage="Nom est obligatoire" label="Nom" id="Anom"/>
+							<p:inputText value="#{GestionEleve.eleveTransit.eleve.nom}" required="true" title="Nom de l'eleve" requiredMessage="Nom est obligatoire" label="Nom" id="Anom"/>
 							<p:tooltip  for="Anom" showEvent="focus" hideEvent="blur" />
 							<p:message for="Anom" />
  
 							<h:outputText style="color:black;font-size:small" value="Prenom: *" />
-							<p:inputText value="#{GestionEleve.eleve.prenom}" required="true" requiredMessage="Prenom est obligatoire" label="Prenom" id="Aprenom"  title="Prenom de l'eleve" />
+							<p:inputText value="#{GestionEleve.eleveTransit.eleve.prenom}" required="true" requiredMessage="Prenom est obligatoire" label="Prenom" id="Aprenom"  title="Prenom de l'eleve" />
 							<p:tooltip  for="Aprenom" showEvent="focus" hideEvent="blur" />
 							<p:message for="Aprenom" />
 							
 														
 							<h:outputText style="color:black;font-size:small" value="Sexe: *" />
-                           	<p:selectOneMenu  value="#{GestionEleve.eleve.sexe}" style="width:168px" id="Asexe" title="Sexe de l'eleve">
+                           	<p:selectOneMenu  value="#{GestionEleve.eleveTransit.eleve.sexe}" style="width:168px" id="Asexe" title="Sexe de l'eleve">
 								<f:selectItem itemLabel="Homme" itemValue="Homme" />
 								<f:selectItem itemLabel="Femme" itemValue="Femme" />
 							</p:selectOneMenu>
 							<p:tooltip  for="Asexe" showEvent="focus" hideEvent="blur" />
 							<p:message for="Asexe" />
+							
+							<h:outputText style="color:black;font-size:small" value="Classe: *" />
+							<p:selectOneMenu  value="#{GestionEleve.selectedClasse.code_classe}" style="width:168px" id="Aclasse" title="Classe de l'eleve">
+								<f:selectItems value="#{GestionEleve.classeList}" />
+							</p:selectOneMenu>
+							<p:tooltip  for="Aclasse" showEvent="focus" hideEvent="blur" />
+							<p:message for="Aclasse" />
  
 						
 							<h:outputText style="color:black;font-size:small" value="Date de naissancess: *" />
-							<p:calendar value="#{GestionEleve.eleve.date_naissance}" tilte="Date de naissance" locale="fr" pattern="MM-dd-yyyy" mask="true" mode="popup" navigator="true"
+							<p:calendar value="#{GestionEleve.eleveTransit.eleve.date_naissance}" tilte="Date de naissance" locale="fr" pattern="MM-dd-yyyy" mask="true" mode="popup" navigator="true"
 								required="true"		requiredMessage="Date de naissance est obligatoire" id="Adn"/>
 							<p:tooltip  for="Adn" showEvent="focus" hideEvent="blur" />
 							<p:message for="Adn" />
@@ -555,16 +562,16 @@
 						<h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
 							<h:panelGrid columns="2" columnClasses="label, value">
 								<h:outputText style="color:black;font-size:small" value="Nom: " />
-								<h:outputText value="#{GestionEleve.eleve.nom}" styleClass="outputLabel"/>
+								<h:outputText value="#{GestionEleve.eleveTransit.eleve.nom}" styleClass="outputLabel"/>
  
 								<h:outputText style="color:black;font-size:small" value="Prenom: " />
-								<h:outputText value="#{GestionEleve.eleve.prenom}" styleClass="outputLabel"/>
+								<h:outputText value="#{GestionEleve.eleveTransit.eleve.prenom}" styleClass="outputLabel"/>
 								
  								<h:outputText  style="color:black;font-size:small" value="Sexe: " />
-								<h:outputText value="#{GestionEleve.eleve.sexe}" styleClass="outputLabel"/>
+								<h:outputText value="#{GestionEleve.eleveTransit.eleve.sexe}" styleClass="outputLabel"/>
 								
 								<h:outputText  style="color:black;font-size:small" value="Date de naissance: " />
-								<h:outputText value="#{GestionEleve.eleve.date_naissance}">
+								<h:outputText value="#{GestionEleve.eleveTransit.eleve.date_naissance}">
 						
 									<f:convertDateTime timeZone="CET" pattern="dd-MM-yyyy" />
 								
@@ -614,34 +621,34 @@
 		   
 		   
 <h:form id="form">
-    <p:dataTable var="eleve" value="#{GestionEleve.eleveList}" paginator="true" rows="10"
+    <p:dataTable var="eleve2" value="#{GestionEleve.eleveList2}" paginator="true" rows="10"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15"  id="eleveTable" >
         <p:ajax event="rowSelect" listener="#{GestionEleve.onRowSelect}" update=":form:eleveDetail" oncomplete="PF('eleveDialog').show()" />
-        <p:column headerText="Matricule"  filterBy="#{eleve.matricule_eleve}">
-            <h:outputText value="#{eleve.matricule_eleve}" />
+        <p:column headerText="Matricule"  filterBy="#{eleve2.eleve.matricule_eleve}">
+            <h:outputText value="#{eleve2.eleve.matricule_eleve}" />
         </p:column>
-        <p:column headerText="Nom"  filterBy="#{eleve.nom}">
-            <h:outputText value="#{eleve.nom}" />
+        <p:column headerText="Nom"  filterBy="#{eleve2.eleve.nom}">
+            <h:outputText value="#{eleve2.eleve.nom}" />
         </p:column>
-        <p:column headerText="Prenom"  filterBy="#{eleve.prenom}">
-            <h:outputText value="#{eleve.prenom}" />
+        <p:column headerText="Prenom"  filterBy="#{elev2e.eleve.prenom}">
+            <h:outputText value="#{eleve2.eleve.prenom}" />
         </p:column>
 		        <p:column headerText="Classe"  >
-            <h:outputText value="" />
+            <h:outputText value="#{eleve2.classe.designation}" />
         </p:column>
-        <p:column headerText="Sexe"  filterBy="#{eleve.sexe}">
-            <h:outputText value="#{eleve.sexe}" />
+        <p:column headerText="Sexe"  filterBy="#{eleve2.eleve.sexe}">
+            <h:outputText value="#{eleve2.eleve.sexe}" />
         </p:column>
 		        <p:column headerText="Date de naissance" >
-            <h:outputText value="#{eleve.date_naissance}" >
+            <h:outputText value="#{eleve2.eleve.date_naissance}" >
 			<f:convertDateTime timeZone="CET" pattern="dd-MM-yyyy" />
 			</h:outputText>
         </p:column>
 		
 		<p:column style="width:50px;text-align: center">
              <p:commandButton update=":form:eleveDetail" oncomplete="PF('eleveDialog').show()" icon="ui-icon-closethick"  title="View">
-                <f:setPropertyActionListener value="#{eleve}" target="#{GestionEleve.selectedEleve}" />
+                <f:setPropertyActionListener value="#{eleve2}" target="#{GestionEleve.selectedEleveTransit}" />
             </p:commandButton>
         </p:column>
 
@@ -651,23 +658,25 @@
     <p:dialog header="Eleve Detail" widgetVar="eleveDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
             
 	   <p:outputPanel id="eleveDetail" style="text-align:center;">
-            <p:panelGrid  columns="2" rendered="#{not empty GestionEleve.selectedEleve}" >
+            <p:panelGrid  columns="2" rendered="#{not empty GestionEleve.selectedEleveTransit}" >
                
  
                 <h:outputText value="Matricule:" style="color:#214DE6"/>
-                <h:outputText value="#{GestionEleve.selectedEleve.matricule_eleve}" />
+                <h:outputText value="#{GestionEleve.selectedEleveTransit.eleve.matricule_eleve}" />
  
                 <h:outputText value="Nom:" style="color:#214DE6" />
-                <h:outputText value="#{GestionEleve.selectedEleve.nom}" />
+                <h:outputText value="#{GestionEleve.selectedEleveTransit.eleve.nom}" />
  
                 <h:outputText value="Prenom:" style="color:#214DE6"/>
-                <h:outputText value="#{GestionEleve.selectedEleve.prenom}" />
+                <h:outputText value="#{GestionEleve.selectedEleveTransit.eleve.prenom}" />
  
                 <h:outputText value="Sexe:" style="color:#214DE6" />
-                <h:outputText value="#{GestionEleve.selectedEleve.sexe}"/>
+                <h:outputText value="#{GestionEleve.selectedEleveTransit.eleve.sexe}"/>
 				
 				<h:outputText value="Date de naissance:" style="color:#214DE6" />
-                <h:outputText value="#{GestionEleve.selectedEleve.date_naissance}"/>
+                <h:outputText value="#{GestionEleve.selectedEleveTransit.eleve.date_naissance}"/>
+				<h:outputText value="Classe:" style="color:#214DE6" />
+                <h:outputText value="#{GestionEleve.selectedEleveTransit.classe.designation}"/>
 				
 
             </p:panelGrid>
