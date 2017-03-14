@@ -572,11 +572,13 @@
 								
 								<h:outputText  style="color:black;font-size:small" value="Date de naissance: " />
 								<h:outputText value="#{GestionEleve.eleveTransit.eleve.date_naissance}">
+								
 						
 									<f:convertDateTime timeZone="CET" pattern="dd-MM-yyyy" />
-								
+																	
 								</h:outputText>
-								
+								<h:outputText  style="color:black;font-size:small" value="Classe: " />
+								<h:outputText value="#{GestionEleve.selectedClasse}">
 							<!--	 <h:outputText  style="color:black;font-size:small" value="Parent: " />
 								<h:outputText value="#{GestionEleve.finalparent}" styleClass="outputLabel"/> -->
 							</h:panelGrid>
