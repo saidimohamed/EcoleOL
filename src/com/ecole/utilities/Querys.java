@@ -19,8 +19,9 @@ public class Querys {
 			session.beginTransaction();
 		
 		session.save(o);
+		
 		session.getTransaction().commit();
-		session.close();
+		//session.close();
 		buildSession();
 		
 	}
@@ -77,32 +78,7 @@ public class Querys {
 			
 		}
 		
-		public void executeQuery(int nbr, String params, String query){
-			
-			if(!session.getTransaction().isActive())
-				session.beginTransaction();
-			
-			Query q = session.createSQLQuery(query);
-			
-			
-			String[] l;
-			l=params.split(",");
-			
-			for(int i=0;i<nbr;i++)
-				q.setParameter(i, l[i]);
-				
-				int result = q.executeUpdate();
-			
-			
-			
-			
-			
-				session.getTransaction().commit();
-				session.close();
-				buildSession();
-			
-			
-		}
+
 		
 		public void transactionCommit(){
 			session.getTransaction().commit();
@@ -119,8 +95,13 @@ public class Querys {
 	}
 	
     public void buildSession(){
-
+    	if( session!=null)
+    		if(session.isOpen())
+    			session.close();
     	session = HibernateUtil.getSessionFactory().getCurrentSession();
+    	if(!session.getTransaction().isActive())
+    	session.getTransaction().begin();
+    	
     	    	
     }
 	

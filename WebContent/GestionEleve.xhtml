@@ -578,7 +578,7 @@
 																	
 								</h:outputText>
 								<h:outputText  style="color:black;font-size:small" value="Classe: " />
-								<h:outputText value="#{GestionEleve.selectedClasse}">
+								<h:outputText value="#{GestionEleve.selectedClasse}"/>
 							<!--	 <h:outputText  style="color:black;font-size:small" value="Parent: " />
 								<h:outputText value="#{GestionEleve.finalparent}" styleClass="outputLabel"/> -->
 							</h:panelGrid>
@@ -760,7 +760,11 @@
 	          <p:column headerText="Classe" >
            <p:cellEditor>
                <f:facet name="output"><h:outputText value="#{eleveM.classe.designation}" /></f:facet>
-               <f:facet name="input"><p:inputText value="#{eleveM.classe.designation}" style="width:100%" /></f:facet>
+               <f:facet name="input">
+			   	<p:selectOneMenu  value="#{GestionEleve.selectedClasse.code_classe}" style="width:168px" id="Aclasse" title="Classe de l'eleve">
+					<f:selectItems value="#{GestionEleve.classeList}" />
+				</p:selectOneMenu>
+			   </f:facet>
            </p:cellEditor>
        </p:column>
 	   
@@ -835,7 +839,7 @@
 		<h:form id="form3">
    <p:growl id="msgs2" showDetail="true"/>
  
-   <p:dataTable id="parentmodif" var="line" value="#{GestionEleve.eleveListTransit}"  style="margin-bottom:20px" paginator="true" rows="10"
+   <p:dataTable id="parentmodif" var="line" value="#{GestionEleve.eleveList2}"  style="margin-bottom:20px" paginator="true" rows="10"
                  paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
                  rowsPerPageTemplate="5,10,15">
  
@@ -846,6 +850,9 @@
 	   
 	   <p:column headerText="Prenom Eleve" >
           <h:outputText value="#{line.eleve.prenom}" />
+       </p:column>
+	   <p:column headerText="Classe Eleve" >
+          <h:outputText value="#{line.classe.designation}" />
        </p:column>
  
 	   <p:column headerText="Nom Parent" >
