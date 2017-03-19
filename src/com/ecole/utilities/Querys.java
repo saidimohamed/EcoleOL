@@ -119,6 +119,7 @@ public class Querys {
 	}
 	
     public void buildSession(){
+
     	session = HibernateUtil.getSessionFactory().getCurrentSession();
     	    	
     }

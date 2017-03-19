@@ -217,6 +217,8 @@ public class GestionEleve  implements Serializable {
 		e.printStackTrace();
 			
 			m.error("Erreur d'enregistrement !! Contactez l'administrateur");
+			q.getSession().close();
+			q.buildSession();
 		}
 		 
 		
