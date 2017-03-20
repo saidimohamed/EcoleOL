@@ -156,8 +156,8 @@ public class GestionNiveau  implements Serializable {
     	
     		
     	q.delete(selectedNiveau);
-    	q.transactionCommit();
-		q.buildSession();
+    	//q.transactionCommit();
+		//q.buildSession();
 	
     	generateListNiveau();
        	m.success("Suppression terminé avec succès");

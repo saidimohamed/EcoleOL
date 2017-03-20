@@ -3,6 +3,7 @@ package com.ecole.utilities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
@@ -15,75 +16,67 @@ public class Querys {
 
 	
 	public void save(Object o){
-		if(!session.getTransaction().isActive())
-			session.beginTransaction();
 		
+		buildSession();
+		session.beginTransaction();
 		session.save(o);
-		
 		session.getTransaction().commit();
-		//session.close();
-		buildSession();
-		
-	}
-	
-	public List find(Class c, String column, String value){
 		session.close();
-		buildSession();
-
-		if(!session.getTransaction().isActive())
-			session.beginTransaction();
+		//buildSession();
 		
-
-		
-		 return session.createCriteria(c).add(Restrictions.eq(column,value)).list();
 	}
 	
-	
-
-	
-	
+	public List find(Class c, String column, String value, Boolean restriction){
+		buildSession();
+		session.beginTransaction();
+		Criteria criteria;
+		if(restriction)
+			criteria = session.createCriteria(c).add(Restrictions.eq(column,value));
+		else
+			 criteria = session.createCriteria(c);
+		
+		List l = criteria.list();
+		session.getTransaction().commit();
+		session.close();
+		 return l;
+	}
 
 
 		public void delete(Object o){
-			if(!session.getTransaction().isActive())
-				session.beginTransaction();
+			buildSession();
+			session.beginTransaction();
 			session.delete(o);
+			session.getTransaction().commit();
+			session.close();
 
 			
 		}
 		public void executeQuery(String query){
-			if(!session.getTransaction().isActive())
-				session.beginTransaction();
-			
-		
-			Query q = session.createQuery(query);
-
-		 q.executeUpdate();
-		transactionCommit();
-			session.close();
 			buildSession();
+			session.beginTransaction();
+			Query q = session.createQuery(query);
+			q.executeUpdate();
+			session.getTransaction().commit();
+			session.close();
 			
 			
 		}
 		
 		public List getAll(String table){
-			session.close();
+
 			buildSession();
-			if(!session.getTransaction().isActive())
-				session.beginTransaction();
+			session.beginTransaction();
 			
 			Query q = session.createQuery("From "+table);
-			return q.list();
-			
-			
-		}
-		
-
-		
-		public void transactionCommit(){
+			List l = q.list();
 			session.getTransaction().commit();
+			session.close();
+			
+			return l;
+			
 			
 		}
+		
 
 	public Session getSession() {
 		return session;
@@ -95,13 +88,9 @@ public class Querys {
 	}
 	
     public void buildSession(){
-    	if( session!=null)
-    		if(session.isOpen())
-    			session.close();
+
     	session = HibernateUtil.getSessionFactory().getCurrentSession();
-    	if(!session.getTransaction().isActive())
-    	session.getTransaction().begin();
-    	
+
     	    	
     }
 	

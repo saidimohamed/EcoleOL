@@ -139,15 +139,10 @@ public class GestionEleve  implements Serializable {
     	
     	eleveTransit=new EleveTransit();
     	selectedClasse = new Classe();
-    	//if(!q.getSession().getTransaction().isActive())
-    	//q.getSession().beginTransaction();
-    	
-    	//listDesClasse = q.getSession().createCriteria(Classe.class).list();
-    	
-    	Criteria criteria = q.getSession().createCriteria(Classe.class);
-    	listDesClasse=criteria.list();
+    	   	
+    	listDesClasse=q.find(Classe.class,"", "", false);
     	System.out.println(((Classe)listDesClasse.get(0)).getDesignation());
-    	 
+
     	parent=null;
     	
     	generateListClasse();
@@ -228,8 +223,8 @@ public class GestionEleve  implements Serializable {
 		e.printStackTrace();
 			
 			m.error("Erreur d'enregistrement !! Contactez l'administrateur");
-			q.getSession().close();
-			q.buildSession();
+			//q.getSession().close();
+			//q.buildSession();
 		}
 		 
 		
@@ -246,14 +241,13 @@ public class GestionEleve  implements Serializable {
     
     public void generateListEleve()
     {	
-		//if(!q.getSession().isOpen())
-			//q.buildSession();
-		//if(!q.getSession().getTransaction().isActive())
-		//	 q.getSession().beginTransaction();
-
+		if(!q.getSession().isOpen()){
+			q.buildSession();
+			q.getSession().beginTransaction();
+		}
     	eleveList = q.getSession().createCriteria(Eleve.class).add(Restrictions.isNull("deleted")).list();
     
-    	
+    	q.getSession().close();
     }
     public void generateListClasse()
     {	
@@ -285,29 +279,29 @@ public class GestionEleve  implements Serializable {
     	List l = new ArrayList<>();
     	
     	
-		if(!q.getSession().isOpen())
+		/*if(!q.getSession().isOpen())
 			q.buildSession();
 		if(!q.getSession().getTransaction().isActive())
-			 q.getSession().beginTransaction();
+			 q.getSession().beginTransaction();*/
 		for(int i=0; i< eleveList.size();i++){
 			
 			EleveTransit et = new EleveTransit();
 
 			e = (Eleve) eleveList.get(i);
 			
-			l = q.find(Eleve_Classe.class, "matricule_eleve", e.getMatricule_eleve());
+			l = q.find(Eleve_Classe.class, "matricule_eleve", e.getMatricule_eleve(), true);
 			if(l.size() != 0 ){
 				
-				cl =  q.find(Classe.class, "code_classe",((Eleve_Classe)  l.get(0)).getCode_classe());
+				cl =  q.find(Classe.class, "code_classe",((Eleve_Classe)  l.get(0)).getCode_classe(),true);
 				et.setClasse((Classe) cl.get(0));
 				
 				
 				}
-			l=q.find(Parent.class,"matricule_eleve", e.getMatricule_eleve())	;
+			l=q.find(Parent.class,"matricule_eleve", e.getMatricule_eleve(),true)	;
     		if(! l.isEmpty()){
     			
     			//l=session.createCriteria(Utilisateur.class).add(Restrictions.eq("id_utilisateur",((Parent)l.get(0)).getId_utilisateur())).list();
-    			l=q.find(Utilisateur.class, "id_utilisateur", ((Parent)l.get(0)).getId_utilisateur());
+    			l=q.find(Utilisateur.class, "id_utilisateur", ((Parent)l.get(0)).getId_utilisateur(),true);
     			et.setParent(((Utilisateur)l.get(0)));
     			
     		}
@@ -351,7 +345,7 @@ public class GestionEleve  implements Serializable {
     			//session.beginTransaction();
     	//Parent pr = new Parent();
     	//pr.setMatricule_eleve(selectedEleve.getMatricule_eleve());
-    	List prl = q.find(Parent.class,"matricule_eleve", selectedEleveTransit.getEleve().getMatricule_eleve());
+    	List prl = q.find(Parent.class,"matricule_eleve", selectedEleveTransit.getEleve().getMatricule_eleve(),true);
     	System.out.println(prl.size()+"  size prl list");
     	if(! prl.isEmpty()){
     		//pr.setId_utilisateur(((Parent)prl.get(0)).getId_utilisateur());
@@ -448,7 +442,7 @@ public class GestionEleve  implements Serializable {
     	else {
     		
     		//UtilisateurHome uh = new UtilisateurHome();
-    		 selectedparent = q.find(Utilisateur.class,"cin", parent);
+    		 selectedparent = q.find(Utilisateur.class,"cin", parent,true);
     		if(selectedparent.size()==0)
     			nomparent="Parent n'existe pas";
     		

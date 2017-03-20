@@ -131,8 +131,8 @@ public class GestionClasse  implements Serializable {
 
 	public void generateListNiveau(){
 		
-		q.getSession().close();
-		q.buildSession();
+		//q.getSession().close();
+		//q.buildSession();
 		
 		List l = q.getAll("Niveau");
 		
@@ -187,7 +187,7 @@ public class GestionClasse  implements Serializable {
 	    
 		}
 		catch(Exception e){
-			q.getSession().close();
+		//	q.getSession().close();
 			q.buildSession();
 			
 		e.printStackTrace();
@@ -209,11 +209,11 @@ public class GestionClasse  implements Serializable {
     
     public void generateListClasse()
     {	
-		if(!q.getSession().isOpen())
+		/*if(!q.getSession().isOpen())
 			q.buildSession();
 		if(!q.getSession().getTransaction().isActive())
 			 q.getSession().beginTransaction();
-	    
+	    */
     	classeList = new ArrayList<ClasseTransit>();
   
     	
@@ -227,7 +227,7 @@ public class GestionClasse  implements Serializable {
     		
     		ClasseTransit ct = new ClasseTransit();
     		
-   			l2=q.find(Niveau.class,"code_niveau",((Classe)l.get(i)).getCode_niveau());
+   			l2=q.find(Niveau.class,"code_niveau",((Classe)l.get(i)).getCode_niveau(),true);
     		if(! l2.isEmpty()){
     			
     			ct.setClasse((Classe)l.get(i));
@@ -269,8 +269,8 @@ public class GestionClasse  implements Serializable {
     	
     	
     	q.delete(selectedClasse.getClasse());
-    	q.transactionCommit();
-		q.buildSession();
+    	//q.transactionCommit();
+		//q.buildSession();
 	
        	m.success("Suppression terminé avec succès");
     	}
@@ -318,10 +318,10 @@ public class GestionClasse  implements Serializable {
 		
 		
 		
-		if(!q.getSession().isOpen())
+		/*if(!q.getSession().isOpen())
 			q.buildSession();
 		if(!q.getSession().getTransaction().isActive())
-			 q.getSession().beginTransaction();
+			 q.getSession().beginTransaction();*/
 		ClasseTransit ct = (ClasseTransit)event.getObject();
 		System.out.println(ct.getDesignation());
 		System.out.println("designation"+classetmp.getDesignation());
