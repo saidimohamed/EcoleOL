@@ -104,8 +104,6 @@ public class GestionUtilisateur  implements Serializable {
 	    
 		}
 		catch(Exception e){
-			q.getSession().close();
-			q.buildSession();
 			
 		e.printStackTrace();
 			

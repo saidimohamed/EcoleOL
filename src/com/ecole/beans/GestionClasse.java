@@ -227,7 +227,7 @@ public class GestionClasse  implements Serializable {
     		
     		ClasseTransit ct = new ClasseTransit();
     		
-   			l2=q.find(Niveau.class,"code_niveau",((Classe)l.get(i)).getCode_niveau(),true);
+   			l2=q.find(Niveau.class,"code_niveau",((Classe)l.get(i)).getCode_niveau(),"equal");
     		if(! l2.isEmpty()){
     			
     			ct.setClasse((Classe)l.get(i));

@@ -102,8 +102,7 @@ public class GestionNiveau  implements Serializable {
 	    
 		}
 		catch(Exception e){
-			q.getSession().close();
-			q.buildSession();
+			
 			
 		e.printStackTrace();
 			
@@ -124,14 +123,10 @@ public class GestionNiveau  implements Serializable {
     
     public void generateListNiveau()
     {	
-		if(!q.getSession().isOpen())
-			q.buildSession();
-		if(!q.getSession().getTransaction().isActive())
-			 q.getSession().beginTransaction();
 
     	
-    	niveauList = q.getAll("Niveau");
-    	
+    	//niveauList = q.getAll("Niveau");
+    	niveauList = q.find(Niveau.class, "", "", "");
     	
     }
 
@@ -203,11 +198,6 @@ public class GestionNiveau  implements Serializable {
     	
     		//uh.update((Niveau)event.getObject());
 		Niveau n = (Niveau)event.getObject();
-		
-		if(!q.getSession().isOpen())
-			q.buildSession();
-		if(!q.getSession().getTransaction().isActive())
-			 q.getSession().beginTransaction();
 		
 	
 		q.executeQuery("update Niveau set designation='"+n.getDesignation()+"'");

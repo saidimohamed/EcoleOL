@@ -8,6 +8,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 
+import com.ecole.models.Eleve;
 import com.ecole.models.Parent;
 
 public class Querys {
@@ -26,7 +27,7 @@ public class Querys {
 		
 	}
 	
-	public List find(Class c, String column, String value, Boolean restriction){
+/*	public List find(Class c, String column, String value, Boolean restriction){
 		buildSession();
 		session.beginTransaction();
 		Criteria criteria;
@@ -34,6 +35,24 @@ public class Querys {
 			criteria = session.createCriteria(c).add(Restrictions.eq(column,value));
 		else
 			 criteria = session.createCriteria(c);
+		
+		List l = criteria.list();
+		session.getTransaction().commit();
+		session.close();
+		 return l;
+	}*/
+	public List find(Class c,String column, String value, String restType){
+		buildSession();
+		session.beginTransaction();
+		Criteria criteria;
+		if(restType.equals("isnull"))
+			criteria = session.createCriteria(c).add(Restrictions.isNull(column));
+		else if (restType.equals("equal"))
+			criteria = session.createCriteria(c).add(Restrictions.eq(column,value));
+		else if (restType.equals("isnotnull"))
+			criteria = session.createCriteria(c).add(Restrictions.isNotNull(column));
+		else
+			criteria = session.createCriteria(c);
 		
 		List l = criteria.list();
 		session.getTransaction().commit();
@@ -78,9 +97,9 @@ public class Querys {
 		}
 		
 
-	public Session getSession() {
-		return session;
-	}
+//	public Session getSession() {
+	//	return session;
+//	}
 
 
 	public void setSession(Session session) {
