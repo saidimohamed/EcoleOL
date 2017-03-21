@@ -1,11 +1,13 @@
 package com.ecole.utilities;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.exception.ConstraintViolationException;
 import org.hibernate.query.Query;
 
 import com.ecole.models.Eleve;
@@ -23,24 +25,10 @@ public class Querys {
 		session.save(o);
 		session.getTransaction().commit();
 		session.close();
-		//buildSession();
+
 		
 	}
-	
-/*	public List find(Class c, String column, String value, Boolean restriction){
-		buildSession();
-		session.beginTransaction();
-		Criteria criteria;
-		if(restriction)
-			criteria = session.createCriteria(c).add(Restrictions.eq(column,value));
-		else
-			 criteria = session.createCriteria(c);
-		
-		List l = criteria.list();
-		session.getTransaction().commit();
-		session.close();
-		 return l;
-	}*/
+
 	public List find(Class c,String column, String value, String restType){
 		buildSession();
 		session.beginTransaction();
@@ -62,12 +50,13 @@ public class Querys {
 
 
 		public void delete(Object o){
+		
 			buildSession();
 			session.beginTransaction();
 			session.delete(o);
 			session.getTransaction().commit();
 			session.close();
-
+		
 			
 		}
 		public void executeQuery(String query){

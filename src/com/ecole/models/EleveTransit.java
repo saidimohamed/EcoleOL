@@ -1,8 +1,10 @@
 package com.ecole.models;
 
-public class EleveTransit {
+import java.io.Serializable;
+
+public class EleveTransit implements Serializable {
 	
-	
+	private static final long serialVersionUID = 833330745655556369L;
 	private Eleve eleve=new Eleve();
 	private Utilisateur parent=new Utilisateur();
 	private Classe classe=new Classe();

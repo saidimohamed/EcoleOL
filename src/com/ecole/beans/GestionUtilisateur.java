@@ -2,27 +2,20 @@ package com.ecole.beans;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
-
 import javax.faces.context.FacesContext;
+import javax.persistence.PersistenceException;
 
-import com.ecole.utilities.HibernateUtil;
 import com.ecole.utilities.Querys;
 
-import org.hibernate.Session;
 import org.primefaces.component.wizard.Wizard;
 import org.primefaces.event.FlowEvent;
 import org.primefaces.event.RowEditEvent;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.LazyDataModel;
-
-import com.ecole.models.Eleve;
 import com.ecole.models.Utilisateur;
 
 import com.ecole.securite.UidGen;
@@ -41,7 +34,6 @@ public class GestionUtilisateur  implements Serializable {
      private List<Utilisateur> utilisateurList;
 
      private Querys q;
-     private Session session;
      
 
 	private 	MessageView m = new MessageView();
@@ -50,36 +42,20 @@ public class GestionUtilisateur  implements Serializable {
 
     public void init() {
     	q = new Querys();
-    	buildSession();
-    	
     	utilisateur=new Utilisateur();
-    	
     	generateListUtilisateur();
     	
-
-    }
-
-    public void buildSession(){
-    	session = HibernateUtil.getSessionFactory().getCurrentSession();
-    	q.setSession(session);
     	
-    }
 
-	
+    }
 
 	public Utilisateur getUtilisateur() {
 		return utilisateur;
 	}
 
-
-
-
 	public void setUtilisateur(Utilisateur utilisateur) {
 		this.utilisateur = utilisateur;
 	}
-
-
-
 
 	public void addUtilisateur(){
 		
@@ -91,16 +67,13 @@ public class GestionUtilisateur  implements Serializable {
 		
 		 
 		try{
-		//uh.persist(utilisateur);
 			q.save(utilisateur);
-
 			reset();
-		m.success("Enregistrement terminé avec succès");
-			    Wizard wizard = (Wizard) FacesContext.getCurrentInstance().getViewRoot().findComponent("utilisateurform:wizard");
-	    wizard.setStep("personal");
+			m.success("Enregistrement terminé avec succès");
+			Wizard wizard = (Wizard) FacesContext.getCurrentInstance().getViewRoot().findComponent("utilisateurform:wizard");
+			wizard.setStep("personal");
 
-
-	    generateListUtilisateur();
+			generateListUtilisateur();
 	    
 		}
 		catch(Exception e){
@@ -124,7 +97,6 @@ public class GestionUtilisateur  implements Serializable {
     
     public void generateListUtilisateur()
     {	
-    	
     	
     	utilisateurList = q.getAll("Utilisateur");
     	lazyModel = new UtilisateurLazyModel(utilisateurList);
@@ -155,20 +127,21 @@ public class GestionUtilisateur  implements Serializable {
     	
     		
     	q.delete(selectedUtilisateur);
-    	session.getTransaction().commit();
-		session.close();
-		buildSession();
     	generateListUtilisateur();
        	m.success("Suppression terminé avec succès");
     	}
-       	catch(Exception e){
-			
-    		e.printStackTrace();
-    		session.close();
-    		buildSession();
-    			
-    			m.error("Erreur de suppression !! Contactez l'administrateur");
+	
+	catch (PersistenceException e){
+		e.printStackTrace();
+	//				System.out.prin tln(e.getMessage() + "===="+e.getCause());
+	
+    			m.error("L'utilisateur est deja lié a un eleve!! Modifiez le parent de l'eleve concerné et reessayez");
     		}
+    	catch(Exception e){
+    		e.printStackTrace();
+    		m.error("Erreur inconnue !! Contactez l'administrateur");
+    	}
+
     }
     
 
@@ -177,32 +150,18 @@ public class GestionUtilisateur  implements Serializable {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     
-    
-
-
-
 	public List<Utilisateur> getUtilisateurList() {
 		return utilisateurList;
 	}
-
-
 
 
 	public void setUtilisateurList(List<Utilisateur> utilisateurList) {
 		this.utilisateurList = utilisateurList;
 	}
 
-
-
-
 	public void editUtilisateur(RowEditEvent event) {
 		
-	
-    	    	    	
-    	
-    		//uh.update((Utilisateur)event.getObject());
 		Utilisateur u = (Utilisateur)event.getObject();
-		
 	
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		String date = formatter.format(u.getDate_naissance());
@@ -212,9 +171,6 @@ public class GestionUtilisateur  implements Serializable {
 		q.executeQuery("update Utilisateur set cin='"+u.getCin()+"',nom='"+u.getNom()+"', prenom='"+u.getPrenom()+"', adresse='"+u.getAdresse()+"', date_naissance='"+date+"', fonction='"+
 				u.getFonction()+"', role='"+u.getRole()+"', sexe='"+u.getSexe()+"', tel='"+u.getTel()+"' where id_utilisateur='"+u.getId_utilisateur()+"'");
 				
-    	session.getTransaction().commit();
-		session.close();
-		buildSession();
     		m.success("Modification terminé avec succès");
     		
    
@@ -222,8 +178,6 @@ public class GestionUtilisateur  implements Serializable {
      
     public void cancelEditUtilisateur(RowEditEvent event) {
     	m.info("Modification Annulée");
-       /* FacesMessage msg = new FacesMessage("Edit Cancelled", ((Car) event.getObject()).getId());
-        FacesContext.getCurrentInstance().addMessage(null, msg);*/
     }
 
     public void reset() {
